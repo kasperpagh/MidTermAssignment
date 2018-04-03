@@ -34,8 +34,7 @@ import java.util.Properties;
 
 import static org.junit.Assert.*;
 
-public class RecognitionIT
-{
+public class RecognitionIT {
 
     private static final int currentlyCorrectSnapshots = 53;
     private static final Logger logger = LoggerFactory.getLogger(RecognitionIT.class);
@@ -46,11 +45,9 @@ public class RecognitionIT
     //    See: http://stackoverflow.com/questions/2408613/problem-reading-jpeg-image-using-imageio-readfile-file
     //    B/W images load without a problem: for now - using snapshots/test_041.jpg
     @Test
-    public void intelligenceSingleTest() throws IOException, ParserConfigurationException, SAXException
-    {
-        logger.info("####### RUNNING: NAME_OF_TEST ######");
-
-        final String image = "snapshots/test_041.jpg";
+    public void intelligenceSingleTest() throws IOException, ParserConfigurationException, SAXException {
+        logger.info("####### RUNNING: Single Test ######");
+        final String image = "snapshots/test_074.jpg";
         CarSnapshot carSnap = new CarSnapshot(image);
         assertNotNull("carSnap is null", carSnap);
         assertNotNull("carSnap.image is null", carSnap.getImage());
@@ -58,7 +55,7 @@ public class RecognitionIT
         assertNotNull(intel);
         String spz = intel.recognize(carSnap);
         assertNotNull("The licence plate is null - are you sure the image has the correct color space?", spz);
-        assertEquals("LM025BD", spz);
+        assertEquals("3B29485", spz);
         carSnap.close();
     }
 
@@ -70,17 +67,14 @@ public class RecognitionIT
      * @throws Exception an Exception
      */
     @Test
-    public void testAllSnapshots() throws Exception
-    {
-        logger.info("####### RUNNING: NAME_OF_TEST ######");
-
+    public void testAllSnapshots() throws Exception {
+        logger.info("####### RUNNING: All snapshots ######");
         String snapshotDirPath = "src/test/resources/snapshots";
         String resultsPath = "src/test/resources/results.properties";
         InputStream resultsStream = new FileInputStream(new File(resultsPath));
 
         Properties properties = new Properties();
         properties.load(resultsStream);
-
         resultsStream.close();
         assertTrue(properties.size() > 0);
 
@@ -95,8 +89,7 @@ public class RecognitionIT
         int correctCount = 0;
         int counter = 0;
         boolean correct;
-        for (File snap : snapshots)
-        {
+        for (File snap : snapshots) {
             correct = false;
             CarSnapshot carSnap = new CarSnapshot(new FileInputStream(snap));
             assertNotNull("carSnap is null", carSnap);
@@ -114,8 +107,7 @@ public class RecognitionIT
             // recognitionErrors.checkThat("The file \"" + snapName + "\" was incorrectly recognized.", numberPlate,
             // is(plateCorrect));
 
-            if (numberPlate != null && numberPlate.equals(plateCorrect))
-            {
+            if (numberPlate != null && numberPlate.equals(plateCorrect)) {
                 correctCount++;
                 correct = true;
             }
