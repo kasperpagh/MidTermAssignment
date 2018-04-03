@@ -24,15 +24,16 @@ import java.util.Collection;
 import java.util.Properties;
 
 @RunWith(Parameterized.class)
-public class RecognitionAllIt {
+public class RecognitionAllIt
+{
     private static final Logger logger = LoggerFactory.getLogger(RecognitionIT.class);
 
     private String inputFile;
     private String expectedPlate;
 
     @Parameterized.Parameters
-    public static Collection primeNumbers() throws IOException {
-        //String snapshotDirPath = "src/test/resources/snapshots";
+    public static Collection prepareParameters() throws IOException
+    {
         String resultsPath = "src/test/resources/results.properties";
         InputStream resultsStream = new FileInputStream(new File(resultsPath));
 
@@ -40,43 +41,35 @@ public class RecognitionAllIt {
         properties.load(resultsStream);
         resultsStream.close();
         assertThat(properties.size() > 0, is(equalTo(true)));
-        //assertTrue(properties.size() > 0);
-        Collection bob = new ArrayList();
-        properties.forEach((key,value)->{
-            bob.add(new Object[] {key,value});
+        Collection propList = new ArrayList();
+        properties.forEach((key, value) ->
+        {
+            propList.add(new Object[]{key, value});
 
         });
-        //File snapshotDir = new File(snapshotDirPath);
-        //File[] snapshots = snapshotDir.listFiles();
-        //assertNotNull(snapshots);
 
-
-
-        return bob;
+        return propList;
     }
-    public RecognitionAllIt(String inputFile,String expectedPlate){
+
+    public RecognitionAllIt(String inputFile, String expectedPlate)
+    {
         this.inputFile = inputFile;
         this.expectedPlate = expectedPlate;
     }
 
     @Test
-    public void intelligenceParameterized() throws IOException, ParserConfigurationException, SAXException {
-
-        logger.info("####### Running: "+inputFile+" ######");
-        final String image = "snapshots/"+inputFile;
+    public void intelligenceParameterized() throws IOException, ParserConfigurationException, SAXException
+    {
+        logger.info("####### Running: " + inputFile + " ######");
+        final String image = "snapshots/" + inputFile;
         CarSnapshot carSnap = new CarSnapshot(image);
-        assertThat(carSnap,is(notNullValue()));
-        assertThat(carSnap.getImage(),is(notNullValue()));
-        //assertNotNull("carSnap is null", carSnap);
-        //assertNotNull("carSnap.image is null", carSnap.getImage());
+        assertThat(carSnap, is(notNullValue()));
+        assertThat(carSnap.getImage(), is(notNullValue()));
         Intelligence intel = new Intelligence();
-        assertThat(intel,is(notNullValue()));
-        //assertNotNull(intel);
+        assertThat(intel, is(notNullValue()));
         String spz = intel.recognize(carSnap);
-        assertThat(spz,is(notNullValue()));
-        //assertNotNull("The licence plate is null - are you sure the image has the correct color space?", spz);
-        assertThat(expectedPlate,is(equalTo(spz)));
-        //assertEquals(expectedPlate, spz);
+        assertThat(spz, is(notNullValue()));
+        assertThat(expectedPlate, is(equalTo(spz)));
         carSnap.close();
     }
 

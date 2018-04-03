@@ -20,7 +20,6 @@ public class DateFormatter implements IDateFormatter
         }
         this.time = time;
         this.timeZone = timeZone;
-
     }
 
     public String getFormattedDate()
@@ -30,8 +29,4 @@ public class DateFormatter implements IDateFormatter
         simpleFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
         return simpleFormat.format(time);
     }
-
-
-
-
 }
